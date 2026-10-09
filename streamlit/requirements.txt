@@ -1,0 +1,3 @@
+# Instalar junto a requirements.txt del proyecto (psycopg2-binary).
+streamlit>=1.35,<2
+plotly>=5.20,<7
