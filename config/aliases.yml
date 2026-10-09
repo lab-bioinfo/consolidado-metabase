@@ -1,0 +1,59 @@
+# =============================================================================
+# config/aliases.yml
+# -----------------------------------------------------------------------------
+# Alias de medicamento/presentación aplicables durante la normalización.
+#
+# REGLA ESTRICTA:
+#   Solo se incluyen alias justificados por evidencia estructural: misma
+#   sustancia y misma dosis (DOSIS_GR idéntico) con diferencia únicamente de
+#   etiqueta (prefijo/sufijo "_EV", guiones bajos de más/menos). NO se aplican
+#   equivalencias clínicas ni agrupaciones de dosis distintas.
+#
+# Dirección: `variante_observada: nombre_canónico`.
+# Los valores de la izquierda aparecen literalmente en la columna MEDICAMENTO
+# de los TSV; los de la derecha son la forma canónica (la usada en 2023/2024).
+#
+# Evidencia de respaldo: docs/data-profile.md §8.7 y §8.8 (DOSIS_GR idéntico).
+# =============================================================================
+
+version: 1
+
+# --- Alias de presentación (misma sustancia, misma dosis) --------------------
+presentaciones:
+  # Prefijo "_EV_" presente solo en 2022 (CIRUGIA/MEDICINA):
+  AMIKACINA_EV_100_MG: AMIKACINA_100_MG
+  AMIKACINA_EV_500_MG: AMIKACINA_500_MG
+  AMPICILINA/SULBACTAM_EV_1.5G: AMPICILINA/SULBACTAM_1.5G
+  CEFTRIAXONA_EV_1G: CEFTRIAXONA_1G
+  CIPROFLOXACINO_EV_200MG: CIPROFLOXACINO_200_MG
+  CLINDAMICINA_EV_300MG: CLINDAMICINA_300MG
+  CLINDAMICINA_EV_600MG: CLINDAMICINA_600MG
+  CLOXACILINA_EV_500MG: CLOXACILINA_500MG
+  ERTAPENEM_EV_1G: ERTAPENEM_1G
+  IMIPENEM_EV_500MG: IMIPENEM_500MG
+  LINEZOLID_EV_600MG: LINEZOLID_600MG
+  MEROPENEM_EV_1G: MEROPENEM_1G
+  MEROPENEM_EV_500MG: MEROPENEM_500MG
+  METRONIDAZOL_EV_500MG: METRONIDAZOL_500MG
+  PIPERACILINA/TAZOBACTAM_EV_4.5G: PIPERACILINA/TAZOBACTAM_4.5G
+  VANCOMICINA_EV_500MG: VANCOMICINA_500MG
+  # Doble guion bajo (typo):
+  VANCOMICINA_EV__1G: VANCOMICINA_1G
+  # Guion bajo final (typo):
+  CEFOTAXIMA_: CEFOTAXIMA
+  # Guion bajo faltante:
+  CIPROFLOXACINO_200MG: CIPROFLOXACINO_200_MG
+
+# --- Alias de subtotales (para validación V5, no son hechos de presentación) --
+subtotales:
+  CLINDAMICINA_EV_TOTAL: CLINDAMICINA_TOTAL
+  VANCOMICINA_EV_TOTAL: VANCOMICINA_TOTAL
+
+# --- Pendientes de validación humana (NO se aplican como alias) ---------------
+pendientes_validacion:
+  - descripcion: "AZITROMICINA_500_MG aparece solo en UPC_NEO/UPC_PED (familia MACROLIDOS/LINCOSAMIDAS); no tiene variante alternativa en los datos. Sin alias."
+    estado: "sin alias necesario"
+  - descripcion: "Agrupación de presentaciones a nivel medicamento (p.ej. VANCOMICINA_1G + VANCOMICINA_500MG) es una decisión de catálogo clínico, NO un alias de presentación."
+    estado: "pendiente validación clínica (fuera de alcance de este archivo)"
+  - descripcion: "AMPICILINA/SULBACTAM_1.5G tiene DOSIS_GR=1 (no 1.5); interpretación clínica pendiente. No se altera."
+    estado: "pendiente validación clínica"

@@ -1,0 +1,881 @@
+# =============================================================================
+# config/periodos.yml
+# -----------------------------------------------------------------------------
+# Mapeo de columnas fuente por (unidad, año, pestaña) construido EXCLUSIVAMENTE
+# a partir de los 5 TSV observados en data/input/ (ver docs/data-profile.md).
+#
+# Convenciones:
+#   - Las claves de `unidades` coinciden con el token <UNIDAD> de la columna
+#     ARCHIVO_ORIGEN, cuyo patrón es `DDD_<UNIDAD>_<AÑO>_V2.XLSX`.
+#   - Cada bloque se identifica por año (clave) y pestaña (PESTANA_ORIGEN).
+#   - `granularidad: mensual`  -> el bloque 2022 tiene columnas mensuales;
+#     las unidades se dan en `columnas.unidades_mensuales` (lista ordenada).
+#   - `granularidad: agregado` -> una sola columna de consumo en
+#     `columnas.unidades`.
+#   - `columnas.gramos_archivo`, `columnas.densidad_archivo`, `columnas.precio`,
+#     `columnas.gasto` son `null` cuando el bloque no las trae.
+#   - `etiquetas_observadas` recoge los valores reales de PERIODO vistos en el
+#     bloque (incluye variantes de texto y celdas vacías).
+#   - `anomalias` documenta interpretaciones no estándar; no se corrige en silencio.
+# =============================================================================
+
+version: 1
+
+unidades:
+  CIRUGIA:
+    descripcion: "Cirugía"
+    tipo_paciente: ADULTO
+    archivo_origen_patron: "DDD_CIRUGIA_<AÑO>_V2.XLSX"
+    periodos:
+      "2022":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2022-01-01"
+          fin: "2022-03-31"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_ENERO, CONSUMO_FEBRERO, CONSUMO_MARZO]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2022-04-01"
+          fin: "2022-06-30"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_ABRIL, CONSUMO_MAYO, CONSUMO_JUNIO]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2022-07-01"
+          fin: "2022-09-30"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_JULIO, CONSUMO_AGOSTO, CONSUMO_SEPTIEMBRE]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2022-10-01"
+          fin: "2022-12-31"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_OCTUBRE, CONSUMO_NOVIEMBRE, CONSUMO_DICIEMBRE]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+      "2023":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2023-01-01"
+          fin: "2023-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ENE-FEB-MAR
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["", "ABR-MAY-JUN"]
+          inicio: "2023-04-01"
+          fin: "2023-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ABR-MAY-JUN
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DDD/100_DIAS_CAMA
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Densidad en columna alternativa 'DDD/100_DIAS_CAMA' (no DENSIDAD_DE_CONSUMO)."
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2023-07-01"
+          fin: "2023-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_JUL-AGO-SEPT
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2023-10-01"
+          fin: "2023-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_OCT-NOV-DIC
+            gramos_archivo: GRAMOS
+            densidad_archivo: DDD2
+            dias_cama: TOTAL_GRAMOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Desplazamiento de columnas: TOTAL_GRAMOS contiene DIAS_CAMA (no gramos); DIAS_CAMA_OCUPADOS está vacío; gramos en 'GRAMOS'; densidad en 'DDD2'."
+      "2024":
+        CUATRIM1:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR-ABR"
+          etiquetas_observadas: ["", "ENE-FEB-MAR-ABR"]
+          inicio: "2024-01-01"
+          fin: "2024-04-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ENE-FEB-MAR-ABR
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+        CUATRIM2:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 2
+          etiqueta: "MAY-JUN-JUL-AGO"
+          etiquetas_observadas: ["", "MAY-JUN-JUL-AGO"]
+          inicio: "2024-05-01"
+          fin: "2024-08-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_MAY-JUN-JUL-AGO
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DDD/100_DIAS_CAMA
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+          anomalias:
+            - "Densidad en columna alternativa 'DDD/100_DIAS_CAMA' (no DENSIDAD_DE_CONSUMO)."
+        CUATRIM3:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 3
+          etiqueta: "SEPT-OCT-NOV-DIC"
+          etiquetas_observadas: ["", "SEPT-OCT-NOV-DIC"]
+          inicio: "2024-09-01"
+          fin: "2024-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_SEPT-OCT-NOV-DIC
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+
+  MEDICINA:
+    descripcion: "Medicina"
+    tipo_paciente: ADULTO
+    archivo_origen_patron: "DDD_MEDICINA_<AÑO>_V2.XLSX"
+    periodos:
+      "2022":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2022-01-01"
+          fin: "2022-03-31"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_ENERO, CONSUMO_FEBRERO, CONSUMO_MARZO]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2022-04-01"
+          fin: "2022-06-30"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_ABRIL, CONSUMO_MAYO, CONSUMO_JUNIO]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2022-07-01"
+          fin: "2022-09-30"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_JULIO, CONSUMO_AGOSTO, CONSUMO_SEPTIEMBRE]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2022-10-01"
+          fin: "2022-12-31"
+          granularidad: mensual
+          columnas:
+            unidades_mensuales: [CONSUMO_OCTUBRE, CONSUMO_NOVIEMBRE, CONSUMO_DICIEMBRE]
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+      "2023":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2023-01-01"
+          fin: "2023-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ENE-FEB-MAR
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2023-04-01"
+          fin: "2023-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ABR-MAY-JUN
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2023-07-01"
+          fin: "2023-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_JULIO
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Consumo trimestral guardado en la columna mensual 'CONSUMO_JULIO' (no existe CONSUMO_JUL-AGO-SEPT). En 2022 la misma columna contiene solo julio."
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["", "OCT-NOV-DIC"]
+          inicio: "2023-10-01"
+          fin: "2023-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_OCT-NOV-DIC
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+      "2024":
+        CUATRIM1:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR-ABR"
+          etiquetas_observadas: ["", "ENE-FEB-MAR-ABR"]
+          inicio: "2024-01-01"
+          fin: "2024-04-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+          anomalias:
+            - "Unidades en TOTAL_FA; columna 'MED' es un duplicado de TOTAL_FA (MED == TOTAL_FA)."
+        CUATRIM2:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 2
+          etiqueta: "MAY-JUN-JUL-AGO"
+          etiquetas_observadas: ["", "MAY-JUN-JUL-AGO"]
+          inicio: "2024-05-01"
+          fin: "2024-08-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+          anomalias:
+            - "Unidades en TOTAL_FA; columna 'MED' es un duplicado de TOTAL_FA (MED == TOTAL_FA)."
+        CUATRIM3:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 3
+          etiqueta: "SEPT-OCT-NOV-DIC"
+          etiquetas_observadas: ["", "SEPT-OCT-NOV-DIC"]
+          inicio: "2024-09-01"
+          fin: "2024-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+          anomalias:
+            - "Unidades en TOTAL_FA; columna 'MED' es un duplicado de TOTAL_FA (MED == TOTAL_FA)."
+
+  UPC_CV:
+    descripcion: "UPC cardiovascular / adulto (archivo CONSOLIDADO_SOLO)"
+    tipo_paciente: ADULTO
+    archivo_origen_patron: "DDD_UPC_CV_<AÑO>_V2.XLSX"
+    periodos:
+      "2023":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2023-01-01"
+          fin: "2023-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ENE-FEB-MAR
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2023-04-01"
+          fin: "2023-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ABR-MAY-JUN
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2023-07-01"
+          fin: "2023-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_JUL-AGO-SEPT
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2023-10-01"
+          fin: "2023-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_OCT-NOV-DIC
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+      "2024":
+        CUATRIM1:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR-ABR"
+          etiquetas_observadas: ["", "ENE-FEB-MAR-ABR"]
+          inicio: "2024-01-01"
+          fin: "2024-04-30"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_ENE-FEB-MAR-ABR
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+        CUATRIM2:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 2
+          etiqueta: "MAY-JUN-JUL-AGO"
+          etiquetas_observadas: ["MAY-JUN-JUL-AGO"]
+          inicio: "2024-05-01"
+          fin: "2024-08-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_MAY-JUN-JUL-AGO
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        CUATRIM3:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 3
+          etiqueta: "SEPT-OCT-NOV-DIC"
+          etiquetas_observadas: ["", "SEPT-OCT-NOV-DIC"]
+          inicio: "2024-09-01"
+          fin: "2024-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: CONSUMO_SEPT-OCT-NOV-DIC
+            gramos_archivo: TOTAL_GRAMOS
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+
+  UPC_NEO:
+    descripcion: "UPC Neonatal"
+    tipo_paciente: NEONATAL
+    archivo_origen_patron: "DDD_UPC_NEO_<AÑO>_V2.XLSX"
+    periodos:
+      "2022":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2022-01-01"
+          fin: "2022-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2022 'UCI/UTI_NEO' NO es unidades; las unidades confiables están en TOTAL_FA (TOTAL_GR == TOTAL_FA * DOSIS_GR)."
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2022-04-01"
+          fin: "2022-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2022 'UCI/UTI_NEO' NO es unidades; las unidades confiables están en TOTAL_FA."
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEP"]
+          inicio: "2022-07-01"
+          fin: "2022-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2022 'UCI/UTI_NEO' NO es unidades; las unidades confiables están en TOTAL_FA."
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2022-10-01"
+          fin: "2022-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2022 'UCI/UTI_NEO' NO es unidades; las unidades confiables están en TOTAL_FA."
+      "2023":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2023-01-01"
+          fin: "2023-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2023-04-01"
+          fin: "2023-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2023-07-01"
+          fin: "2023-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2023-10-01"
+          fin: "2023-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+      "2024":
+        CUATRIM1:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR-ABR"
+          etiquetas_observadas: ["", "ENE-FEB-MAR-ABR"]
+          inicio: "2024-01-01"
+          fin: "2024-04-30"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+        CUATRIM2:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 2
+          etiqueta: "MAY-JUN-JUL-AGO"
+          etiquetas_observadas: ["", "MAY-JUN-JUL-AGO"]
+          inicio: "2024-05-01"
+          fin: "2024-08-31"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+        CUATRIM3:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 3
+          etiqueta: "SEPT-OCT-NOV-DIC"
+          etiquetas_observadas: ["SEP-OCT-NOV-DIC"]
+          inicio: "2024-09-01"
+          fin: "2024-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: UCI/UTI_NEO
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+          anomalias:
+            - "Etiqueta de periodo con variante 'SEP-OCT-NOV-DIC' (sin T en SEP)."
+            - "Precio unitario en VALORES_2023 (columna de 2023) pese a ser bloque 2024."
+
+  UPC_PED:
+    descripcion: "UPC Pediátrica"
+    tipo_paciente: PEDIATRICO
+    archivo_origen_patron: "DDD_UPC_PED_<AÑO>_V2.XLSX"
+    periodos:
+      "2022":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2022-01-01"
+          fin: "2022-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Columna 'UCI/UTI_PED' está duplicada (índices 6 y 16); en 2022 el dato está en la 2ª copia (índice 16). Se usa TOTAL_FA como unidades confiables."
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2022-04-01"
+          fin: "2022-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Se usa TOTAL_FA como unidades confiables (UCI/UTI_PED duplicada e inconsistente)."
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEP"]
+          inicio: "2022-07-01"
+          fin: "2022-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Se usa TOTAL_FA como unidades confiables."
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2022-10-01"
+          fin: "2022-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "Se usa TOTAL_FA como unidades confiables."
+      "2023":
+        TRIM1:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR"
+          etiquetas_observadas: ["ENE-FEB-MAR"]
+          inicio: "2023-01-01"
+          fin: "2023-03-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2023 T1 el dato nominal está en UCI/UTI_PED (índice 6). Se usa TOTAL_FA como unidades confiables."
+        TRIM2:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 2
+          etiqueta: "ABR-MAY-JUN"
+          etiquetas_observadas: ["ABR-MAY-JUN"]
+          inicio: "2023-04-01"
+          fin: "2023-06-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2023 T2 el dato nominal está en UCI/UTI_PED (índice 16). Se usa TOTAL_FA como unidades confiables."
+        TRIM3:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 3
+          etiqueta: "JUL-AGO-SEPT"
+          etiquetas_observadas: ["JUL-AGO-SEPT"]
+          inicio: "2023-07-01"
+          fin: "2023-09-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2023 T3 el dato nominal está en UCI/UTI_NEO (índice 15): dato pediátrico en columna rotulada NEO. Se usa TOTAL_FA."
+        TRIM4:
+          tipo_periodo: TRIMESTRE
+          numero_periodo: 4
+          etiqueta: "OCT-NOV-DIC"
+          etiquetas_observadas: ["OCT-NOV-DIC"]
+          inicio: "2023-10-01"
+          fin: "2023-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: null
+            gasto: null
+          anomalias:
+            - "En 2023 T4 el dato nominal está en UCI/UTI_NEO (índice 15). Se usa TOTAL_FA."
+      "2024":
+        CUATRIM1:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 1
+          etiqueta: "ENE-FEB-MAR-ABR"
+          etiquetas_observadas: ["", "ENE-FEB-MAR-ABR"]
+          inicio: "2024-01-01"
+          fin: "2024-04-30"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+          anomalias:
+            - "En 2024 C1 el dato nominal está en UCI/UTI_PED (índice 6). Se usa TOTAL_FA."
+        CUATRIM2:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 2
+          etiqueta: "MAY-JUN-JUL-AGO"
+          etiquetas_observadas: ["", "MAY-JUN-JUL-AGO"]
+          inicio: "2024-05-01"
+          fin: "2024-08-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2024
+            gasto: GASTO
+          anomalias:
+            - "En 2024 C2 el dato nominal está en UCI/UTI_PED (índice 6). Se usa TOTAL_FA."
+        CUATRIM4:
+          tipo_periodo: CUATRIMESTRE
+          numero_periodo: 3
+          etiqueta: "SEPT-OCT-NOV-DIC"
+          etiquetas_observadas: ["", "SEPT-OCT-NOV-DIC"]
+          inicio: "2024-09-01"
+          fin: "2024-12-31"
+          granularidad: agregado
+          columnas:
+            unidades: TOTAL_FA
+            gramos_archivo: TOTAL_GR
+            densidad_archivo: DENSIDAD_DE_CONSUMO
+            dias_cama: DIAS_CAMA_OCUPADOS
+            precio: VALORES_2023
+            gasto: GASTO
+          anomalias:
+            - "ANOMALÍA EXPLÍCITA: PESTANA_ORIGEN='CUATRIM4' para el tercer cuatrimestre. Se interpreta como CUATRIMESTRE nº 3 (etiqueta SEPT-OCT-NOV-DIC); NO se corrige en silencio. Requiere validación humana."
+            - "El dato nominal está en UCI/UTI_NEO (índice 15). Se usa TOTAL_FA."
+            - "Precio unitario en VALORES_2023 pese a ser bloque 2024."

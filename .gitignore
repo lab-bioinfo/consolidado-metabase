@@ -1,0 +1,78 @@
+# =========================
+# Secrets / local config
+# =========================
+.env
+.env.*
+!.env.example
+
+conectar-api,txt
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# =========================
+# Virtual environments
+# =========================
+.venv/
+venv/
+
+# =========================
+# Local tools / agent state
+# =========================
+.opencode/
+.lo_presentation_profile/
+
+# =========================
+# Internal-only project context
+# =========================
+AGENTS.md
+CONTEXT.md
+docs/
+
+# =========================
+# Real data
+# =========================
+data/input/*
+!data/input/.gitkeep
+
+data/processed/
+data/rejected/
+
+# =========================
+# Presentation artifacts
+# =========================
+*.pptx
+*.pdf
+
+# =========================
+# Office temp files
+# =========================
+.~lock.*
+~$*
+
+# =========================
+# DB / backups
+# =========================
+*.sqlite3
+*.dump
+*.bak
+*.sql.gz
+
+# =========================
+# Editor / OS
+# =========================
+.vscode/
+.idea/
+.DS_Store
+.opencode/
+
+data/input/*
+!data/input/.gitkeep

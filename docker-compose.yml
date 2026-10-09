@@ -1,0 +1,51 @@
+# =============================================================================
+# docker-compose.yml — PostgreSQL + Metabase
+#
+#   docker compose up -d          # levanta postgres + metabase
+#   docker compose down           # detiene (conserva el volumen de datos)
+#
+# Metabase usa PostgreSQL para su propia base de aplicación (NO H2).
+# Las credenciales se leen desde `.env` (ver `.env.example`).
+# =============================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Usadas por el script de inicialización para crear la BD de Metabase.
+      METABASE_DB_NAME: ${METABASE_DB_NAME}
+      METABASE_DB_USER: ${METABASE_DB_USER}
+      METABASE_DB_PASSWORD: ${METABASE_DB_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/docker:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  metabase:
+    image: metabase/metabase:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${METABASE_DB_NAME}
+      MB_DB_PORT: 5432
+      MB_DB_USER: ${METABASE_DB_USER}
+      MB_DB_PASS: ${METABASE_DB_PASSWORD}
+      MB_DB_HOST: postgres
+    ports:
+      - "${MB_PORT:-3000}:3000"
+
+volumes:
+  pgdata:

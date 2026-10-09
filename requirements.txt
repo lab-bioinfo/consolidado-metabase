@@ -1,0 +1,7 @@
+# Dependencias de ejecución del ETL (Python 3.11+).
+PyYAML>=6.0
+click>=8.1
+psycopg2-binary>=2.9
+
+# Dependencias de desarrollo (opcionales; los tests usan stdlib `unittest`).
+# pytest>=8.0
